@@ -1,4 +1,4 @@
-name: Build Pake App for 星辰云
+name: Build 星辰云 with Pake
 
 on:
   workflow_dispatch:
@@ -8,18 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Build pake app with tw93/action-pake
+        uses: tw93/action-pake@v1
+        with:
+          url: https://next.starxv.com
+          name: 星辰云
+          platform: win
 
-      - name: Build with Docker
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/app \
-            tw93/pake:latest \
-            pake https://next.starxv.com --name "星辰云" --targets windows
-
-      - name: Upload Build Artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: 星辰云
-          path: |
-            /home/runner/work/**/星辰云*.msi
+          path: dist/**/*
