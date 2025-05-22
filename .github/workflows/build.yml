@@ -11,21 +11,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Pake CLI
-        run: npm install -g pake-cli
-
-      - name: Build Pake App
+      - name: Build with Docker
         run: |
-          pake https://next.starxv.com --name 星辰云 --targets windows
+          docker run --rm -v ${{ github.workspace }}:/app \
+            tw93/pake:latest \
+            pake https://next.starxv.com --name "星辰云" --targets windows
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: 星辰云
           path: |
-            星辰云*.exe
+            /home/runner/work/**/星辰云*.msi
